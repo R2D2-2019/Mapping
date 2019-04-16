@@ -68,6 +68,12 @@ class rectangle:
             point.y >= self.y - self.height and
             point.y <= self.y + self.height)
 
+    def intersects(self, other):
+        return not((other.x - other.width > self.x + self.width) or
+        (other.x + other.width < self.x - self.width) or
+        (other.y - other.height > self.y + self.height) or
+        (other.y + other.height < self.y - self.height))
+
 
 class quadtree:
     """
@@ -126,6 +132,41 @@ class quadtree:
 
         self.divided = True
 
+    def query(self, selected_range, found):
+        """
+        @brief A function to get a part of the map, by giving a specific range.
+        @param range A rectangle that describes the area u want to know its points.
+        @param[out] found An array variable to receive all the points found in the query range.
+        """
+        if not self.boundary.intersects(selected_range):
+            return found;
+
+        for p in self.points:
+            if selected_range.contains(p):
+                found.append(p)
+
+        if self.divided:
+            self.topleft.query(selected_range,found)
+            self.topright.query(selected_range,found)
+            self.bottomleft.query(selected_range,found)
+            self.bottomright.query(selected_range,found)
+
+        return
+
+    def get_points(self, all_points):
+        """
+        @brief A function to get all the points from the quadtree.
+        @param[out] An array/container to return the points in.
+        """
+        for p in self.points:
+            all_points.append(p)
+
+        if self.divided:
+            self.topleft.get_points(all_points)
+            self.topright.get_points(all_points)
+            self.bottomleft.get_points(all_points)
+            self.bottomright.get_points(all_points)
+
     def print_tree(self, rootnumber = 0, treename = "root"):
         """
         @brief Print the tree information, mainly used for debuging/developing.
@@ -148,20 +189,6 @@ class quadtree:
             self.bottomright.print_tree(rootnumber + 1,treename + " bottomright")
         print()
 
-    def get_points(self, all_points):
-        """
-        @brief A function to get all the points from the quadtree.
-        @param[out] An array/container to return the points in.
-        """
-        for p in self.points:
-            all_points.append(p)
-
-        if self.divided:
-            self.topleft.get_points(all_points)
-            self.topright.get_points(all_points)
-            self.bottomleft.get_points(all_points)
-            self.bottomright.get_points(all_points)
-
     def print_map(self):
         """
         @brief A function to print the map using basic ASCII.
@@ -183,13 +210,32 @@ class quadtree:
             print()
         return
 
+    def print_query(self, selected_range, found):
+        """
+        @brief A function to print the selected part of the map using basic ASCII.
+        """
+        x_start = selected_range.x - selected_range.width
+        x_end = selected_range.x + selected_range.width
+        y_start = selected_range.y - selected_range.height
+        y_end = selected_range.y + selected_range.height
+
+        for x in range(x_start, x_end):
+            for y in range(y_start, y_end):
+                if point(x,y) in found:
+                    print("#", end="")
+                else:
+                    print("-",end="")
+            print()
+        return
+
+
 if __name__ == '__main__':
     #init
     root_size_rec = rectangle(100,100,100,100)
     qt = quadtree(root_size_rec,4)
 
     #Insert Points
-    for i in range(50):
+    for i in range(200):
         p = point(randint(0,200), randint(0,200))
         qt.insert(p)
 
@@ -204,5 +250,10 @@ if __name__ == '__main__':
     #Print the map representation in terminal
     qt.print_map()
 
+    #test query, get points from a certain range
+    query_points = []
+    query_range = rectangle(0,200,20,20)
+    qt.query(query_range, query_points)
+    qt.print_query(query_range, query_points)
 
-"TODO: Documentation, Reconstruct subdivide, maybe split main, "
+"TODO:Reconstruct subdivide, maybe split main"
