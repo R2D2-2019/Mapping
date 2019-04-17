@@ -10,6 +10,8 @@ points = []
 points.append(CartesianCoordinate(-11,-11))
 points.append(CartesianCoordinate(0,0))
 points.append(CartesianCoordinate(11,11))
+points.append(CartesianCoordinate(-1,1))
+points.append(CartesianCoordinate(1,-1))
 
 for map in maps:
 	for point in points:
