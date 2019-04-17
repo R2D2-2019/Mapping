@@ -111,7 +111,7 @@ class ListMap(MapInterface):
 	def expandRight(self, amountOfNewCols):
 		for row in self.map:
 			for col in range(amountOfNewCols):
-				row.insert(len(self.map[col]) - 1, PointState.unoccupied)
+				row.insert(len(row) - 1, PointState.unoccupied)
 
 	"""
 	@brief Method used to update the TopLeftPoint.
