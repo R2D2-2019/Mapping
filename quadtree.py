@@ -5,11 +5,13 @@ from random import randint
 This module is the implementation of mapping using quadtree algorithm.
 """
 
+
 class point:
     """
     @brief A point class that contains x and y.
     """
-    def __init__(self,x,y):
+
+    def __init__(self, x, y):
         """
         @brief The constructor.
         @param x The x coordinate of the point(width)
@@ -41,11 +43,31 @@ class point:
         """
         return self.x != other.x or self.y != other.y
 
+    def __add__(self, other):
+        """
+        @brief Add Operator.
+        @param other The other point that the point will be added the to this point.
+        @return !DOES NOT RETURN!
+        """
+        self.x += other.x
+        self.y += other.y
+
+    def __sub__(self, other):
+        """
+        @brief Substraction operator.
+        @param other The other point that the point will be compared to.
+        @return !DOES NOT RETURN!
+        """
+        self.x -= other.x
+        self.y -= other.y
+
+
 class rectangle:
     """
     @brief A rectangle that contans the size of the root/tree/subtree.
     """
-    def __init__(self,x,y,w,h):
+
+    def __init__(self, x, y, w, h):
         """
         @brief The constructor.
         @param x The x coordinate of the middle point of the rectangle(width).
@@ -64,22 +86,23 @@ class rectangle:
         @return Boolean.
         """
         return (point.x >= self.x - self.width and
-            point.x <= self.x + self.width and
-            point.y >= self.y - self.height and
-            point.y <= self.y + self.height)
+                point.x <= self.x + self.width and
+                point.y >= self.y - self.height and
+                point.y <= self.y + self.height)
 
     def intersects(self, other):
         return not((other.x - other.width > self.x + self.width) or
-        (other.x + other.width < self.x - self.width) or
-        (other.y - other.height > self.y + self.height) or
-        (other.y + other.height < self.y - self.height))
+                   (other.x + other.width < self.x - self.width) or
+                   (other.y - other.height > self.y + self.height) or
+                   (other.y + other.height < self.y - self.height))
 
 
 class quadtree:
     """
     @brief A tree node that can divide in 4 smaller nodes. First is root.
     """
-    def __init__(self,boundary,capacity):
+
+    def __init__(self, boundary, capacity):
         """
         @brief The constructor.
         @param boundary The quadtree size/boundary(a rectangle class).
@@ -90,24 +113,59 @@ class quadtree:
         self.points = []
         self.divided = False
 
-    def insert(self,point):
+    def insert(self, point, depth=0):
         """
         @brief Insert function to insert a point into the quadtree.
         @param point The point that will be inserted into the quadtree(point class).
         @return Boolean. Wether the points was inserted or not, The point position must be inside the tree's area.
         """
+
         if (not self.boundary.contains(point)):
-            return False
+            if depth == 0:
+                self.expand()
+            else:
+                return False
 
         if(self.capacity > len(self.points)):
             self.points.append(point)
             return True
 
         if not self.divided:
-            print ("subdivide")
+            print("subdivide")
             self.subdivide()
 
-        return self.topleft.insert(point) or self.topright.insert(point) or self.bottomleft.insert(point) or self.bottomright.insert(point)
+        return self.topleft.insert(point, depth+1) or self.topright.insert(point, depth+1) or self.bottomleft.insert(point, depth+1) or self.bottomright.insert(point, depth+1)
+
+    def expand(self):
+        print ("EXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPAND")
+        all_points = []
+        self.get_points(all_points)
+        self.boundary.width *= 2;
+        self.boundary.height *= 2;
+
+        self.delete()
+
+        self.divided = False
+        self.points.clear()
+
+        for p in all_points:
+            self.insert(p)
+
+    def delete(self):
+        if self.divided:
+            self.topleft.delete()
+            self.topright.delete()
+            self.bottomleft.delete()
+            self.bottomright.delete()
+
+            del self.topleft
+            del self.topright
+            del self.bottomleft
+            del self.bottomright
+
+        return
+
+
 
     def subdivide(self):
         """
@@ -139,17 +197,17 @@ class quadtree:
         @param[out] found An array variable to receive all the points found in the query range.
         """
         if not self.boundary.intersects(selected_range):
-            return found;
+            return found
 
         for p in self.points:
             if selected_range.contains(p):
                 found.append(p)
 
         if self.divided:
-            self.topleft.query(selected_range,found)
-            self.topright.query(selected_range,found)
-            self.bottomleft.query(selected_range,found)
-            self.bottomright.query(selected_range,found)
+            self.topleft.query(selected_range, found)
+            self.topright.query(selected_range, found)
+            self.bottomleft.query(selected_range, found)
+            self.bottomright.query(selected_range, found)
 
         return
 
@@ -167,26 +225,26 @@ class quadtree:
             self.bottomleft.get_points(all_points)
             self.bottomright.get_points(all_points)
 
-    def print_tree(self, rootnumber = 0, treename = "root"):
+    def print_tree(self, rootnumber=0, treename="root"):
         """
         @brief Print the tree information, mainly used for debuging/developing.
         @param rootnumber The depth of the three node.
         @param treename The name/position of the quadtree node.
         """
         if len(self.points) > 0:
-            print ("Rootdepth = ", rootnumber,
-                    ", position = ", treename,
-                    ", points = ", len(self.points))
+            print("Rootdepth = ", rootnumber,
+                  ", position = ", treename,
+                  ", points = ", len(self.points))
             for p in self.points:
                 print(p)
         else:
             return
 
         if self.divided:
-            self.topleft.print_tree(rootnumber + 1,treename + " topleft")
-            self.topright.print_tree(rootnumber + 1,treename + " topright")
-            self.bottomleft.print_tree(rootnumber + 1,treename + " bottomleft")
-            self.bottomright.print_tree(rootnumber + 1,treename + " bottomright")
+            self.topleft.print_tree(rootnumber + 1, treename + " topleft")
+            self.topright.print_tree(rootnumber + 1, treename + " topright")
+            self.bottomleft.print_tree(rootnumber + 1, treename + " bottomleft")
+            self.bottomright.print_tree(rootnumber + 1, treename + " bottomright")
         print()
 
     def print_map(self):
@@ -203,14 +261,14 @@ class quadtree:
 
         for x in range(x_start, x_end):
             for y in range(y_start, y_end):
-                if point(x,y) in all_points:
+                if point(x, y) in all_points:
                     print("#", end="")
                 else:
-                    print("-",end="")
+                    print("-", end="")
             print()
         return
 
-    def print_query(self, selected_range, found):
+    def print_query(self, selected_range, query_points):
         """
         @brief A function to print the selected part of the map using basic ASCII.
         """
@@ -221,39 +279,50 @@ class quadtree:
 
         for x in range(x_start, x_end):
             for y in range(y_start, y_end):
-                if point(x,y) in found:
+                if point(x, y) in query_points:
                     print("#", end="")
                 else:
-                    print("-",end="")
+                    print("-", end="")
             print()
         return
 
 
 if __name__ == '__main__':
-    #init
-    root_size_rec = rectangle(100,100,100,100)
-    qt = quadtree(root_size_rec,4)
+    # init
+    root_size_rec = rectangle(0, 0, 50, 50)
+    qt = quadtree(root_size_rec, 4)
 
-    #Insert Points
-    for i in range(200):
-        p = point(randint(0,200), randint(0,200))
+    # Insert Points
+    print(root_size_rec.x, root_size_rec.y, root_size_rec.width, root_size_rec.height)
+    for i in range(20):
+        p = point(randint(10,20),randint(10,20))
         qt.insert(p)
 
-    #Print Tree info
+    for i in range(20):
+        p = point(randint(10,20),randint(10,20))
+        qt.insert(p)
+
+    # Print Tree info
     qt.print_tree()
 
-    #Get all points
+    # Get all points
     all = []
     qt.get_points(all)
     print(all)
 
-    #Print the map representation in terminal
-    qt.print_map()
+    # # Print the whole map representation in terminal
+    # qt.print_map()
 
-    #test query, get points from a certain range
+    # Test query, get points from a certain range(part of the map)
     query_points = []
-    query_range = rectangle(0,200,20,20)
+    query_range = rectangle(20,20,10, 10)
     qt.query(query_range, query_points)
     qt.print_query(query_range, query_points)
 
-"TODO:Reconstruct subdivide, maybe split main"
+    #test EXPAND
+    qt.insert(point(0,99))
+    qt.print_map()
+
+
+
+"TODO:split main, 50x2 = max 99 not 100"
