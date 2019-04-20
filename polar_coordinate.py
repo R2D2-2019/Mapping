@@ -4,9 +4,11 @@ from math import sin, cos, pi
 from enum import Enum
 import time
 
+
 class angle_c(Enum):
     radians = 1
     degrees = 2
+
 
 """
 @brief Class polarCoordinate provides functionality to store and convert a polar coordinate. 
@@ -18,6 +20,7 @@ class polarCoordinate:
     @param angle The angle to the coordinate from the origin.
     @param angleType The type of angle (radians of degrees) (angle_c)
     """
+
     def __init__(self, distance, angle, angleType):
         self.distance = distance
         if angleType is angle_c.degrees:
