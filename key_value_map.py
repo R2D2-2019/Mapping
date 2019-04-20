@@ -43,10 +43,10 @@ class keyValueMap(MapInterface):
 
 	"""
 	@brief Method used to get all the points stored in the map.
-	@return A dictionary containing all the points of the map.
+	@return A list containing all the occupied points of the map.
 	"""
 	def getMapPoints(self):
-		return self.map
+		return self.map.keys()
 	
 	"""
 	@brief Checks whether a point is occupied in the key value map. 

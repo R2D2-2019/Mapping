@@ -48,7 +48,7 @@ class MapInterface():
         raise NotImplementedError()
 
     """
-    @brief Pure virtual method used to get all the points stored in a map.
+    @brief Pure virtual method used to get all the occupied points stored in a map.
     @return A dictionary containing all the points of a map.
     @warning This method must be overridden.		
     """
@@ -58,7 +58,7 @@ class MapInterface():
     """
     @brief Pure virtual method used to check if a location is occupied in a map.
     @return A boolean containing whether the location is occupied or not.
-    @warning This method must be overridden.		
+    @warning This method must be overridden.
     """
     def isOccupied(self, coordinate):
         raise NotImplementedError()
@@ -70,6 +70,7 @@ class MapInterface():
     def __str__(self):
         result = str()
         points = self.getMapPoints()
+        print(points)
         for h in range(self.getHeight()):
             for w in range(self.getWidth()):
                 if CartesianCoordinate(self.getTopLeftPoint().x + w, self.getTopLeftPoint().y + h) in points:

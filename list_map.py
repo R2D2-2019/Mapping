@@ -55,11 +55,16 @@ class ListMap(MapInterface):
 
     """
     @brief Method used to get all the points stored in the map.
-    @return A dictionary containing all the points of the map.
+    @return A list containing all the points occupied of the map.
     """
-
     def getMapPoints(self):
-        return self.map
+        points = list()
+        for y in range(len(self.map)):
+            for x in range(len(self.map[y])):
+                if self.map[y][x] == PointState.occupied:
+                    points.append(CartesianCoordinate(x - self.origin.x, y - self.origin.y)) 
+        print(points)
+        return points
 
     """
     @brief Method used to check if the coordinate is valid.
