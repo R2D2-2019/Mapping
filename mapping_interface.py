@@ -69,9 +69,10 @@ class MapInterface():
     """
     def __str__(self):
         result = str()
+        points = self.getMapPoints()
         for h in range(self.getHeight()):
             for w in range(self.getWidth()):
-                if self.isOccupied(CartesianCoordinate(self.getTopLeftPoint().x + w, self.getTopLeftPoint().y + h)):
+                if CartesianCoordinate(self.getTopLeftPoint().x + w, self.getTopLeftPoint().y + h) in points:
                     result += 'x'
                 else:
                     result += '-'
