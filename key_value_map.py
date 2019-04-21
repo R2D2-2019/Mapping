@@ -1,88 +1,105 @@
 from cartesian_coordinate import CartesianCoordinate
-from mapping_interface import MapInterface, PointState
+from mapping_interface import MapInterface
+from mapping_interface import PointState
 
-"""
-@brief Class keyValueMap provides functionality to create a map using keys and values. 
-"""
+
 class keyValueMap(MapInterface):
-	"""
-	@brief keyValueMap constructor used to create a basic key value map.
-	"""
-	def __init__(self):
-		self.map = {}
-		self.topLeftPoint = CartesianCoordinate(0,0)
-		self.botRightPoint = CartesianCoordinate(0,0)
+    """
+    @brief Class keyValueMap provides functionality to create a map using keys and values.
+    """
 
-	"""
-	@brief Method used to get the topLeftPoint of the key value map.
-	@return A CartesianCoordinate containing the top left corner point of the key value map.
-	"""
-	def getTopLeftPoint(self):
-		return self.topLeftPoint
+    def __init__(self):
+        """
+        @brief keyValueMap constructor used to create a basic key value map.
+        """
 
-	"""
-	@brief Method used to get the botRightPoint of the key value map.
-	@return A CartesianCoordinate containing the bottom right corner point of the key value map.
-	"""
-	def getBotRightPoint(self):
-		return self.botRightPoint
+        self.map = {}
+        self.top_left_point = CartesianCoordinate(0, 0)
+        self.bot_right_point = CartesianCoordinate(0, 0)
 
-	"""
-	@brief Method used to get the height key value of the map.
-	@return A integer containing the height key value of the map.
-	"""
-	def getHeight(self):
-		return self.getBotRightPoint().y - self.getTopLeftPoint().y + 1
-	
-	"""
-	@brief Method used to get the width of the key value map.
-	@return A integer containing the width of the key value map.
-	"""
-	def getWidth(self):
-		return self.getBotRightPoint().x - self.getTopLeftPoint().x + 1
+    def get_top_left_point(self):
+        """
+        @brief Method used to get the top_left_point of the key value map.
+        @return A CartesianCoordinate containing the top left corner point of the key value map.
+        """
 
-	"""
-	@brief Method used to get all the points stored in the map.
-	@return A list containing all the occupied points of the map.
-	"""
-	def getMapPoints(self):
-		return self.map.keys()
-	
-	"""
-	@brief Checks whether a point is occupied in the key value map. 
-	@return A boolean containing whether the point is occupied.
-	"""
-	def isOccupied(self, coordinate):
-		return CartesianCoordinate(coordinate.x, coordinate.y) in self.getMapPoints()
+        return self.top_left_point
 
-	"""
-	@brief Method used to update the TopLeftPoint.
-	@param newPoint The point you want to check if it should be the new TopLeftPoint
-	@details Updates the TopLeftPoint if the newPoint is outside the outer border of the current map on the top left.
-	"""
-	def updateTopLeftPoint(self, newPoint):
-		if newPoint.x < self.topLeftPoint.x:
-			self.topLeftPoint = CartesianCoordinate(newPoint.x, self.topLeftPoint.y)
-		if newPoint.y < self.topLeftPoint.y:
-			self.topLeftPoint = CartesianCoordinate(self.topLeftPoint.x, newPoint.y)
+    def get_bot_right_point(self):
+        """
+        @brief Method used to get the bot_right_point of the key value map.
+        @return A CartesianCoordinate containing the bottom right corner point of the key value map.
+        """
 
-	"""
-	@brief Method used to update the BotRightPoint.
-	@param newPoint The point you want to check if it should be the new BotRightPoint.
-	@details Updates the BotRightPoint if the newPoint is outside the outer border of the current map on the bot right.
-	"""
-	def updateBotRightPoint(self, newPoint):
-		if newPoint.x > self.botRightPoint.x:
-			self.botRightPoint = CartesianCoordinate(newPoint.x, self.botRightPoint.y)
-		if newPoint.y > self.botRightPoint.y:
-			self.botRightPoint = CartesianCoordinate(self.botRightPoint.x, newPoint.y)
+        return self.bot_right_point
 
-	"""
-	@brief Method used to add a point to the map.
-	@param point The point you want to add to the key value map. (CartesianCoordinate)
-	@param state The state of the point you want to add. (PointState)
-	"""
-	def addPointCartesian(self, point, state):
-		self.updateTopLeftPoint(point)
-		self.updateBotRightPoint(point)
-		self.map[point] = state
+    def get_height(self):
+        """
+        @brief Method used to get the height key value of the map.
+        @return A integer containing the height key value of the map.
+        """
+
+        return self.get_bot_right_point().y - self.get_top_left_point().y + 1
+
+    def get_width(self):
+        """
+        @brief Method used to get the width of the key value map.
+        @return A integer containing the width of the key value map.
+        """
+
+        return self.get_bot_right_point().x - self.get_top_left_point().x + 1
+
+    def get_map_points(self):
+        """
+        @brief Method used to get all the points stored in the map.
+        @return A list containing all the occupied points of the map.
+        """
+
+        return self.map.keys()
+
+    def is_occupied(self, coordinate):
+        """
+        @brief Checks whether a point is occupied in the key value map. 
+        @return A boolean containing whether the point is occupied.
+        """
+
+        return CartesianCoordinate(coordinate.x, coordinate.y) in self.get_map_points()
+
+    def update_top_left_point(self, new_point):
+        """
+        @brief Method used to update the TopLeftPoint.
+        @param new_point The point you want to check if it should be the new TopLeftPoint
+        @details Updates the TopLeftPoint if the new_point is outside the outer border of the current map on the top left.
+        """
+
+        if new_point.x < self.top_left_point.x:
+            self.top_left_point = CartesianCoordinate(
+                new_point.x, self.top_left_point.y)
+        if new_point.y < self.top_left_point.y:
+            self.top_left_point = CartesianCoordinate(
+                self.top_left_point.x, new_point.y)
+
+    def update_bot_right_point(self, new_point):
+        """
+        @brief Method used to update the BotRightPoint.
+        @param new_point The point you want to check if it should be the new BotRightPoint.
+        @details Updates the BotRightPoint if the new_point is outside the outer border of the current map on the bot right.
+        """
+
+        if new_point.x > self.bot_right_point.x:
+            self.bot_right_point = CartesianCoordinate(
+                new_point.x, self.bot_right_point.y)
+        if new_point.y > self.bot_right_point.y:
+            self.bot_right_point = CartesianCoordinate(
+                self.bot_right_point.x, new_point.y)
+
+    def add_point_cartesian(self, point, state):
+        """
+        @brief Method used to add a point to the map.
+        @param point The point you want to add to the key value map. (CartesianCoordinate)
+        @param state The state of the point you want to add. (PointState)
+        """
+
+        self.update_top_left_point(point)
+        self.update_bot_right_point(point)
+        self.map[point] = state
