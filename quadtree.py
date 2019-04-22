@@ -1,7 +1,8 @@
 from random import randint
 from cartesian_coordinate import CartesianCoordinate
 from mapping_interface import MapInterface
-
+import time
+import sys
 """
 @package Quadtree
 This module is the implementation of mapping using quadtree algorithm.
@@ -10,7 +11,6 @@ class rectangle():
     """
     @brief A rectangle that contans the size of the root/tree/subtree.
     """
-
     def __init__(self, x, y, w, h):
         """
         @brief The constructor.
@@ -35,17 +35,19 @@ class rectangle():
                 point.y <= self.y + self.height)
 
     def intersects(self, other):
+        """
+        @brief A function if a another rectangle intersects with this rectangle.
+        @return Boolean.
+        """
         return not((other.x - other.width > self.x + self.width) or
                    (other.x + other.width < self.x - self.width) or
                    (other.y - other.height > self.y + self.height) or
                    (other.y + other.height < self.y - self.height))
 
-
 class quadtree(MapInterface):
     """
     @brief A tree node that can divide in 4 smaller nodes. First is root.
     """
-
     def __init__(self, boundary, capacity):
         """
         @brief The constructor.
@@ -75,13 +77,14 @@ class quadtree(MapInterface):
             return True
 
         if not self.divided:
-            print("subdivide")
             self.subdivide()
 
         return self.topleft.insert(point, depth+1) or self.topright.insert(point, depth+1) or self.bottomleft.insert(point, depth+1) or self.bottomright.insert(point, depth+1)
 
     def expand(self):
-        print ("EXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPANDEXPAND")
+        """
+        @brief Expand function used to make the map bigger when a new point is added that is outside the current size of the map, makes the map 2x bigger.
+        """
         all_points = self.getMapPoints()
         self.boundary.width *= 2
         self.boundary.height *= 2
@@ -94,7 +97,11 @@ class quadtree(MapInterface):
         for p in all_points:
             self.insert(p)
 
+
     def delete(self):
+        """
+        @brief Delete function used to clear the quadtree recursiefly.
+        """
         if self.divided:
             self.topleft.delete()
             self.topright.delete()
@@ -153,8 +160,12 @@ class quadtree(MapInterface):
             self.bottomright.query(selected_range, found)
 
         return
-    
+
     def getMapPoints(self):
+        """
+        @brief A function that returns all the points currently in the map.
+        @return A list of all the points found.
+        """
         points = []
         self.get_points(points)
         return points
@@ -195,33 +206,33 @@ class quadtree(MapInterface):
             self.bottomright.print_tree(rootnumber + 1, treename + " bottomright")
         print()
 
-
-    """
-    @brief Method used to get the topLeftPoint of a map.
-    @return A CartesianCoordinate containing the top left corner point of a map.
-    """
     def getTopLeftPoint(self):
+        """
+        @brief Method used to get the topLeftPoint of a map.
+        @return A CartesianCoordinate containing the top left corner point of a map.
+        """
         return CartesianCoordinate(self.boundary.x - self.boundary.width, self.boundary.y - self.boundary.height)
 
-    """
-    @brief Method used to get the botRightPoint of a map.
-    @return A CartesianCoordinate containing the top left corner point of a map.
-    """
     def getBotRightPoint(self):
+        """
+        @brief Method used to get the botRightPoint of a map.
+        @return A CartesianCoordinate containing the top left corner point of a map.
+        """
         return CartesianCoordinate(self.boundary.x + self.boundary.width, self.boundary.y + self.boundary.height)
 
-    """
-    @brief Method used to get the height of a map.
-    @return A integer containing the height of a map.
-    """
     def getHeight(self):
+        """
+        @brief Method used to get the height of a map.
+        @return A integer containing the height of a map.
+        """
         return self.boundary.height
 
-    """
-    @brief Method used to get the width of a map.
-    @return A integer containing the width of a map.
-    """
+
     def getWidth(self):
+        """
+        @brief Method used to get the width of a map.
+        @return A integer containing the width of a map.
+        """
         return self.boundary.width
 
     def print_map(self):
@@ -244,6 +255,7 @@ class quadtree(MapInterface):
             print()
         return
 
+
     def print_query(self, selected_range, query_points):
         """
         @brief A function to print the selected part of the map using basic ASCII.
@@ -262,46 +274,40 @@ class quadtree(MapInterface):
             print()
         return
 
-    """
-    @brief Method used to check if a location is occupied in a map.
-    @return A boolean containing whether the location is occupied or not.
-    """
+
     def isOccupied(self, coordinate):
+        """
+        @brief Method used to check if a location is occupied in a map.
+        @return A boolean containing whether the location is occupied or not.
+        """
         return coordinate in self.getMapPoints()
 
 
-
 if __name__ == '__main__':
-    # init
-    root_size_rec = rectangle(0, 0, 50, 50)
+    #Initialize the map
+    root_size_rec = rectangle(0, 0, 200, 200)
     qt = quadtree(root_size_rec, 4)
 
     # Insert Points
-    print(root_size_rec.x, root_size_rec.y, root_size_rec.width, root_size_rec.height)
-    for i in range(20):
-        p = CartesianCoordinate(randint(10,20),randint(10,20))
+    random_points = []
+    for i in range(500):
+        random_points.append(CartesianCoordinate(randint(-200,200),randint(-200,200)))
+    for p in random_points:
         qt.insert(p)
 
-    for i in range(20):
-        p = CartesianCoordinate(randint(10,20),randint(10,20))
-        qt.insert(p)
-
-    # Print Tree info
-    qt.print_tree()
+    # # Print Tree info
+    # qt.print_tree()
 
     # Get all points
     all = qt.getMapPoints()
-    print(all)
 
-    # # Print the whole map representation in terminal
-    # qt.print_map()
+    # Print the whole map representation in terminal
+    qt.print_map()
 
     # Test query, get points from a certain range(part of the map)
     query_points = []
-    query_range = rectangle(20,20,10,10)
+    query_range = rectangle(0,0,50,50)
     qt.query(query_range, query_points)
-    qt.print_query(query_range, query_points)
-    print(qt)
+
     #test EXPAND
-    qt.insert(CartesianCoordinate(0,99))
-    qt.print_map()
+    qt.expand()
