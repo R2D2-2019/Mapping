@@ -1,7 +1,6 @@
 from cartesian_coordinate import CartesianCoordinate
 from enum import Enum
 
-
 class PointState(Enum):
     """
     @brief PointState enum used to determine what the state of a location is.

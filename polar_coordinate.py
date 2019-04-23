@@ -2,7 +2,6 @@
 
 from math import sin, cos, pi
 from enum import Enum
-import time
 
 class angle(Enum):
 

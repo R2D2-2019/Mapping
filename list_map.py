@@ -2,7 +2,6 @@ from cartesian_coordinate import CartesianCoordinate
 from mapping_interface import MapInterface
 from mapping_interface import PointState
 
-
 class ListMap(MapInterface):
     """
     @brief Class ListMap provides functionality to create a map using keys and values. 
@@ -75,8 +74,7 @@ class ListMap(MapInterface):
         @return A boolean containing True if valid else False.
         """
 
-        if coordinate.y > len(self.map) - 1 or coordinate.x > len(self.map[coordinate.y]) - 1:
-            return False
+        return not (coordinate.y > len(self.map) - 1 or coordinate.x > len(self.map[coordinate.y]) - 1)
 
     def is_occupied(self, coordinate):
         """
