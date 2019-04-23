@@ -10,7 +10,6 @@ class PointState(Enum):
     unoccupied = 0, "unoccupied"
     occupied = 1, "occupied"
 
-
     def __new__(cls, value, name):
         """
         @brief PointState enum used to determine what the state of a location is.
@@ -22,7 +21,7 @@ class PointState(Enum):
         @return 
         """
 
-        member = object.__new__(cls, value, name)
+        member = object.__new__(cls)
         member._value_ = value
         member.__name__ = name
         return member
