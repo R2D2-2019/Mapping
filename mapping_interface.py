@@ -3,18 +3,36 @@ from enum import Enum
 
 
 class PointState(Enum):
+    """
+    @brief PointState enum used to determine what the state of a location is.
+    """
 
     unoccupied = 0, "unoccupied"
     occupied = 1, "occupied"
 
-    def __new__(cls, value, name):
 
-        member = object.__new__(cls)
+    def __new__(cls, value, name):
+        """
+        @brief PointState enum used to determine what the state of a location is.
+        @details 
+        This method creates a new instance of the PointState class
+        and sets the value and name.
+        @param value 
+        @param name
+        @return 
+        """
+
+        member = object.__new__(cls, value, name)
         member._value_ = value
         member.__name__ = name
         return member
 
     def __int__(self):
+        """
+        @brief Used to cast the object to an int.
+        @details Returns the value of the class when int() is called.
+        @return Integer containing the value of the object.
+        """
 
         return self.value
 
