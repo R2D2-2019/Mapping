@@ -9,6 +9,7 @@ class angle(Enum):
     radians = 1
     degrees = 2
 
+
 class polarCoordinate:
     """
     @brief Class polarCoordinate provides functionality to store and convert a polar coordinate. 
