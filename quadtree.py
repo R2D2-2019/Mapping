@@ -1,8 +1,7 @@
 from random import randint
 from cartesian_coordinate import CartesianCoordinate
 from mapping_interface import MapInterface
-import time
-import sys
+
 """
 @package Quadtree
 This module is the implementation of mapping using quadtree algorithm.
@@ -281,33 +280,3 @@ class quadtree(MapInterface):
         @return A boolean containing whether the location is occupied or not.
         """
         return coordinate in self.getMapPoints()
-
-
-if __name__ == '__main__':
-    #Initialize the map
-    root_size_rec = rectangle(0, 0, 200, 200)
-    qt = quadtree(root_size_rec, 4)
-
-    # Insert Points
-    random_points = []
-    for i in range(500):
-        random_points.append(CartesianCoordinate(randint(-200,200),randint(-200,200)))
-    for p in random_points:
-        qt.insert(p)
-
-    # # Print Tree info
-    # qt.print_tree()
-
-    # Get all points
-    all = qt.getMapPoints()
-
-    # Print the whole map representation in terminal
-    qt.print_map()
-
-    # Test query, get points from a certain range(part of the map)
-    query_points = []
-    query_range = rectangle(0,0,50,50)
-    qt.query(query_range, query_points)
-
-    #test EXPAND
-    qt.expand()
