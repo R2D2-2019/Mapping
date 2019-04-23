@@ -43,7 +43,7 @@ class rectangle():
                    (other.y - other.height > self.y + self.height) or
                    (other.y + other.height < self.y - self.height))
 
-class quadtree(MapInterface):
+class quadtreeMap(MapInterface):
     """
     @brief A tree node that can divide in 4 smaller nodes. First is root.
     """
@@ -58,10 +58,11 @@ class quadtree(MapInterface):
         self.points = []
         self.divided = False
 
-    def insert(self, point, depth=0):
+    def add_point_cartesian(self, point, state, depth=0):
         """
         @brief Insert function to insert a point into the quadtree.
         @param point The point that will be inserted into the quadtree(point class).
+        @param depth ?
         @return Boolean. Wether the points was inserted or not, The point position must be inside the tree's area.
         """
 
@@ -78,7 +79,10 @@ class quadtree(MapInterface):
         if not self.divided:
             self.subdivide()
 
-        return self.topleft.insert(point, depth+1) or self.topright.insert(point, depth+1) or self.bottomleft.insert(point, depth+1) or self.bottomright.insert(point, depth+1)
+        return self.topleft.add_point_cartesian(point, state, depth+1) \
+                or self.topright.add_point_cartesian(point, state, depth+1) \
+                or self.bottomleft.add_point_cartesian(point, state, depth+1) \
+                or self.bottomright.add_point_cartesian(point, state, depth+1)
 
     def expand(self):
         """
@@ -94,12 +98,12 @@ class quadtree(MapInterface):
         self.points.clear()
 
         for p in all_points:
-            self.insert(p)
+            self.add_point_cartesian(p, PointState.unoccupied)
 
 
     def delete(self):
         """
-        @brief Delete function used to clear the quadtree recursiefly.
+        @brief Delete function used to clear the quadtree recursively.
         """
         if self.divided:
             self.topleft.delete()
@@ -112,10 +116,6 @@ class quadtree(MapInterface):
             del self.bottomleft
             del self.bottomright
 
-        return
-
-
-
     def subdivide(self):
         """
         @brief Subdivides the quadtree node into four smaller treenodes.
@@ -126,16 +126,16 @@ class quadtree(MapInterface):
         h = self.boundary.height / 2
 
         tr = rectangle(x+w, y-h, w, h)
-        self.topright = quadtree(tr, self.capacity)
+        self.topright = quadtreeMap(tr, self.capacity)
 
         tl = rectangle(x-w, y-h, w, h)
-        self.topleft = quadtree(tl, self.capacity)
+        self.topleft = quadtreeMap(tl, self.capacity)
 
         br = rectangle(x+w, y+h, w, h)
-        self.bottomright = quadtree(br, self.capacity)
+        self.bottomright = quadtreeMap(br, self.capacity)
 
         bl = rectangle(x-w, y+h, w, h)
-        self.bottomleft = quadtree(bl, self.capacity)
+        self.bottomleft = quadtreeMap(bl, self.capacity)
 
         self.divided = True
 
@@ -158,9 +158,7 @@ class quadtree(MapInterface):
             self.bottomleft.query(selected_range, found)
             self.bottomright.query(selected_range, found)
 
-        return
-
-    def getMapPoints(self):
+    def get_map_points(self):
         """
         @brief A function that returns all the points currently in the map.
         @return A list of all the points found.
@@ -205,34 +203,35 @@ class quadtree(MapInterface):
             self.bottomright.print_tree(rootnumber + 1, treename + " bottomright")
         print()
 
-    def getTopLeftPoint(self):
+    def get_top_left_point(self):
         """
         @brief Method used to get the topLeftPoint of a map.
         @return A CartesianCoordinate containing the top left corner point of a map.
         """
         return CartesianCoordinate(self.boundary.x - self.boundary.width, self.boundary.y - self.boundary.height)
 
-    def getBotRightPoint(self):
+    def get_bot_right_point(self):
         """
         @brief Method used to get the botRightPoint of a map.
         @return A CartesianCoordinate containing the top left corner point of a map.
         """
         return CartesianCoordinate(self.boundary.x + self.boundary.width, self.boundary.y + self.boundary.height)
 
-    def getHeight(self):
+    def get_height(self):
         """
         @brief Method used to get the height of a map.
         @return A integer containing the height of a map.
         """
-        return self.boundary.height
+
+        return (self.boundary.y + self.boundary.height) - (self.boundary.y - self.boundary.height)
 
 
-    def getWidth(self):
+    def get_width(self):
         """
         @brief Method used to get the width of a map.
         @return A integer containing the width of a map.
         """
-        return self.boundary.width
+        return (self.boundary.x + self.boundary.width) - (self.boundary.x - self.boundary.width)
 
     def print_map(self):
         """
@@ -242,8 +241,10 @@ class quadtree(MapInterface):
         x_end = self.boundary.x + self.boundary.width
         y_start = self.boundary.y - self.boundary.height
         y_end = self.boundary.y + self.boundary.height
-
-        all_points = self.getMapPoints()
+        print(x_start, x_end)
+        print(y_start, y_end)
+        
+        all_points = self.get_map_points()
 
         for x in range(x_start, x_end):
             for y in range(y_start, y_end):
@@ -279,4 +280,4 @@ class quadtree(MapInterface):
         @brief Method used to check if a location is occupied in a map.
         @return A boolean containing whether the location is occupied or not.
         """
-        return coordinate in self.getMapPoints()
+        return coordinate in self.get_map_points()
