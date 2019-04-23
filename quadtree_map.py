@@ -9,7 +9,7 @@ This module is the implementation of mapping using quadtree algorithm.
 """
 
 
-class rectangle():
+class Rectangle():
     """
     @brief A rectangle that contans the size of the root/tree/subtree.
     """
@@ -53,7 +53,7 @@ class rectangle():
         )
 
 
-class quadtreeMap(MapInterface):
+class QuadtreeMap(MapInterface):
     """
     @brief A tree node that can divide in 4 smaller nodes. First is root.
     """
@@ -139,17 +139,17 @@ class quadtreeMap(MapInterface):
         w = self.boundary.width / 2
         h = self.boundary.height / 2
 
-        tr = rectangle(x+w, y-h, w, h)
-        self.topright = quadtreeMap(tr, self.capacity)
+        tr = Rectangle(x+w, y-h, w, h)
+        self.topright = QuadtreeMap(tr, self.capacity)
 
-        tl = rectangle(x-w, y-h, w, h)
-        self.topleft = quadtreeMap(tl, self.capacity)
+        tl = Rectangle(x-w, y-h, w, h)
+        self.topleft = QuadtreeMap(tl, self.capacity)
 
-        br = rectangle(x+w, y+h, w, h)
-        self.bottomright = quadtreeMap(br, self.capacity)
+        br = Rectangle(x+w, y+h, w, h)
+        self.bottomright = QuadtreeMap(br, self.capacity)
 
-        bl = rectangle(x-w, y+h, w, h)
-        self.bottomleft = quadtreeMap(bl, self.capacity)
+        bl = Rectangle(x-w, y+h, w, h)
+        self.bottomleft = QuadtreeMap(bl, self.capacity)
 
         self.divided = True
 

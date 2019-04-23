@@ -3,7 +3,7 @@ from mapping_interface import MapInterface
 from mapping_interface import PointState
 
 
-class keyValueMap(MapInterface):
+class KeyValueMap(MapInterface):
     """
     @brief Class keyValueMap provides functionality to create a map using keys and values.
     """
@@ -57,13 +57,13 @@ class keyValueMap(MapInterface):
 
         return self.map.keys()
 
-    def is_occupied(self, coordinate):
+    def is_occupied(self, coordinate : CartesianCoordinate) -> CartesianCoordinate:
         """
-        @brief Checks whether a point is occupied in the key value map. 
+        @brief Checks whether a point is occupied in the key value map.
         @return A boolean containing whether the point is occupied.
         """
 
-        return CartesianCoordinate(coordinate.x, coordinate.y) in self.get_map_points()
+        return coordinate in self.get_map_points()
 
     def update_top_left_point(self, new_point):
         """
@@ -79,7 +79,7 @@ class keyValueMap(MapInterface):
             self.top_left_point = CartesianCoordinate(
                 self.top_left_point.x, new_point.y)
 
-    def update_bot_right_point(self, new_point):
+    def update_bot_right_point(self, new_point : CartesianCoordinate):
         """
         @brief Method used to update the BotRightPoint.
         @param new_point The point you want to check if it should be the new BotRightPoint.
@@ -93,7 +93,7 @@ class keyValueMap(MapInterface):
             self.bot_right_point = CartesianCoordinate(
                 self.bot_right_point.x, new_point.y)
 
-    def add_point_cartesian(self, point, state):
+    def add_point_cartesian(self, point : CartesianCoordinate, state):
         """
         @brief Method used to add a point to the map.
         @param point The point you want to add to the key value map. (CartesianCoordinate)
