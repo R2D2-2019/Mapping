@@ -16,8 +16,8 @@ class PointState(Enum):
         @details 
         This method creates a new instance of the PointState class
         and sets the value and name.
-        @param value 
-        @param name
+        @param value The value of the PointState you want to set to the new PointState.
+        @param name The name of the PointState you want to set to the new PointState.
         @return 
         """
 
