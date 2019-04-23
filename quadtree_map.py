@@ -1,6 +1,7 @@
 from random import randint
 from cartesian_coordinate import CartesianCoordinate
 from mapping_interface import MapInterface
+from mapping_interface import PointState
 
 """
 @package Quadtree
@@ -88,7 +89,7 @@ class quadtreeMap(MapInterface):
         """
         @brief Expand function used to make the map bigger when a new point is added that is outside the current size of the map, makes the map 2x bigger.
         """
-        all_points = self.getMapPoints()
+        all_points = self.get_map_points()
         self.boundary.width *= 2
         self.boundary.height *= 2
 
