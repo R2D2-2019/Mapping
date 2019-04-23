@@ -3,6 +3,7 @@
 from math import sin, cos, pi
 from enum import Enum
 
+
 class angle(Enum):
 
     radians = 1

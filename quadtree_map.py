@@ -8,6 +8,7 @@ from mapping_interface import PointState
 This module is the implementation of mapping using quadtree algorithm.
 """
 
+
 class rectangle():
     """
     @brief A rectangle that contans the size of the root/tree/subtree.
@@ -33,10 +34,10 @@ class rectangle():
         @return Boolean.
         """
 
-        return (point.x >= self.x - self.width \
-            and point.x <= self.x + self.width \
-            and point.y >= self.y - self.height \
-            and point.y <= self.y + self.height)
+        return (point.x >= self.x - self.width
+                and point.x <= self.x + self.width
+                and point.y >= self.y - self.height
+                and point.y <= self.y + self.height)
 
     def intersects(self, other):
         """
@@ -45,11 +46,12 @@ class rectangle():
         """
 
         return not(
-                (other.x - other.width > self.x + self.width) \
-                or (other.x + other.width < self.x - self.width) \
-                or (other.y - other.height > self.y + self.height) \
-                or (other.y + other.height < self.y - self.height)
-            )
+            (other.x - other.width > self.x + self.width)
+            or (other.x + other.width < self.x - self.width)
+            or (other.y - other.height > self.y + self.height)
+            or (other.y + other.height < self.y - self.height)
+        )
+
 
 class quadtreeMap(MapInterface):
     """
@@ -90,9 +92,9 @@ class quadtreeMap(MapInterface):
             self.subdivide()
 
         return self.topleft.add_point_cartesian(point, state, depth+1) \
-                or self.topright.add_point_cartesian(point, state, depth+1) \
-                or self.bottomleft.add_point_cartesian(point, state, depth+1) \
-                or self.bottomright.add_point_cartesian(point, state, depth+1)
+            or self.topright.add_point_cartesian(point, state, depth+1) \
+            or self.bottomleft.add_point_cartesian(point, state, depth+1) \
+            or self.bottomright.add_point_cartesian(point, state, depth+1)
 
     def expand(self):
         """
@@ -110,7 +112,6 @@ class quadtreeMap(MapInterface):
 
         for p in all_points:
             self.add_point_cartesian(p, PointState.unoccupied)
-
 
     def delete(self):
         """
@@ -210,12 +211,15 @@ class quadtreeMap(MapInterface):
                   ", points = ", len(self.points))
             for p in self.points:
                 print(p)
-                
+
             if self.divided:
                 self.topleft.print_tree(rootnumber + 1, treename + " topleft")
-                self.topright.print_tree(rootnumber + 1, treename + " topright")
-                self.bottomleft.print_tree(rootnumber + 1, treename + " bottomleft")
-                self.bottomright.print_tree(rootnumber + 1, treename + " bottomright")
+                self.topright.print_tree(
+                    rootnumber + 1, treename + " topright")
+                self.bottomleft.print_tree(
+                    rootnumber + 1, treename + " bottomleft")
+                self.bottomright.print_tree(
+                    rootnumber + 1, treename + " bottomright")
             print()
 
     def get_top_left_point(self):
@@ -242,7 +246,6 @@ class quadtreeMap(MapInterface):
 
         return (self.boundary.y + self.boundary.height) - (self.boundary.y - self.boundary.height)
 
-
     def get_width(self):
         """
         @brief Method used to get the width of a map.
@@ -262,7 +265,7 @@ class quadtreeMap(MapInterface):
         y_end = self.boundary.y + self.boundary.height
         print(x_start, x_end)
         print(y_start, y_end)
-        
+
         all_points = self.get_map_points()
 
         for x in range(x_start, x_end):
@@ -272,7 +275,6 @@ class quadtreeMap(MapInterface):
                 else:
                     print("-", end="")
             print()
-
 
     def print_query(self, selected_range, query_points):
         """
@@ -291,7 +293,6 @@ class quadtreeMap(MapInterface):
                 else:
                     print("-", end="")
             print()
-
 
     def isOccupied(self, coordinate):
         """

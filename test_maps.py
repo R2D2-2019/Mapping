@@ -21,6 +21,6 @@ points.append(CartesianCoordinate(1, -1))
 for map in maps:
     for point in points:
         map.add_point_cartesian(point, PointState.occupied)
-    
+
     print(map.get_map_points())
     print(map)

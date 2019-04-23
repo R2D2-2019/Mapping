@@ -2,6 +2,7 @@ from cartesian_coordinate import CartesianCoordinate
 from mapping_interface import MapInterface
 from mapping_interface import PointState
 
+
 class ListMap(MapInterface):
     """
     @brief Class ListMap provides functionality to create a map using keys and values. 
