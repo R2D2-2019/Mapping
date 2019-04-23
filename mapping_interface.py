@@ -18,7 +18,7 @@ class PointState(Enum):
         and sets the value and name.
         @param value The value of the PointState you want to set to the new PointState.
         @param name The name of the PointState you want to set to the new PointState.
-        @return 
+        @return A new PointState object containing the given value and name. 
         """
 
         member = object.__new__(cls)
