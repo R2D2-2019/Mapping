@@ -103,8 +103,7 @@ class MapInterface():
 
         result = str()
         points = self.get_map_points()
-
-        for h in range(self.get_height()):
+        for h in range(self.get_height() - 1, -1, -1):
             for w in range(self.get_width()):
                 if CartesianCoordinate(self.get_top_left_point().x + w, self.get_top_left_point().y + h) in points:
                     result += 'x'
