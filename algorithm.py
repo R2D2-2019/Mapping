@@ -41,3 +41,21 @@ class Algorithms():
         d = R * c
         return d * 1000; #meters
 
+    ## Documentation for calc_new_coordinate
+    #  The function calculates a new coordinate based on the distance that you give 
+    #  The distance x and y is in meters
+    #  The latitude and longtitude is the coordinate from the robot
+    #  This way you can give an obstacle a world coordinate location
+    def calc_new_coordinate(self, latitude, longtitude, distance_y, distance_x):
+        M_PI = 3.14159265358979323846
+        R = 6378.137  #Radius of earth in KM
+        new_latitude = latitude + (distance_y / R) * (100 / M_PI)
+        new_longtitude = longtitude + (distance_x / R) * (100 / M_PI)
+
+    ## Documentation for from_lidar_to_coordinate
+    #  The function makes from distance and degree, an x and y value.
+    #  This is needed to calculate the coordinate from the lidar given value.
+    def from_lidar_to_coordinate(self, lidar_degree, distance):
+        degree = lidar_degree
+        distance_y = sin(degree) * distance
+        distance_x = cos(degree) * distance
