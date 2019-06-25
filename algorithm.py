@@ -1,3 +1,5 @@
+from math import sin,cos,atan,sqrt
+
 class Algorithms():
     ##  Documentation for decimal_degrees_to_time_degrees
     #   The function asks for a degree value from 0 till 360.
@@ -23,3 +25,20 @@ class Algorithms():
             time["minutes"] = 0
             time["seconds"] = 0
         return(time["hours"] + time["minutes"]/60 + time["seconds"] / 3600)
+
+    ## Documentation for measure_distance
+    #  The function calculates the distance in meters between two world coordinates
+    #  It needs the latitude and longtitude from two coordinates to be able to calculate the distance
+    #  Longtitude is the Y value from the world
+    #  Latitude is the X value from the world
+    def measure_distance(self, lat1, lon1, lat2, lon2):
+        M_PI = 3.14159265358979323846
+        float R = 6378.137  #Radius of earth in KM
+        float dLat = lat2 * M_PI / 180 - lat1 * M_PI / 180
+        float dLon = lon2 * M_PI / 180 - lon1 * M_PI / 180
+        float a = sin(dLat/2) * sin(dLat/2) +
+        cos(lat1 * M_PI / 180) * cos(lat2 * M_PI / 180) * sin(dLon/2) * sin(dLon/2)
+        float c = 2 * atan2(sqrt(a), sqrt(1-a))
+        float d = R * c
+        return d * 1000; #meters
+
