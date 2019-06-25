@@ -1,4 +1,4 @@
-from math import sin,cos,atan,sqrt
+from math import sin,cos,atan2,sqrt
 
 class Algorithms():
     ##  Documentation for decimal_degrees_to_time_degrees
@@ -33,12 +33,11 @@ class Algorithms():
     #  Latitude is the X value from the world
     def measure_distance(self, lat1, lon1, lat2, lon2):
         M_PI = 3.14159265358979323846
-        float R = 6378.137  #Radius of earth in KM
-        float dLat = lat2 * M_PI / 180 - lat1 * M_PI / 180
-        float dLon = lon2 * M_PI / 180 - lon1 * M_PI / 180
-        float a = sin(dLat/2) * sin(dLat/2) +
-        cos(lat1 * M_PI / 180) * cos(lat2 * M_PI / 180) * sin(dLon/2) * sin(dLon/2)
-        float c = 2 * atan2(sqrt(a), sqrt(1-a))
-        float d = R * c
+        R = 6378.137  #Radius of earth in KM
+        dLat = lat2 * M_PI / 180 - lat1 * M_PI / 180
+        dLon = lon2 * M_PI / 180 - lon1 * M_PI / 180
+        a = sin(dLat/2) * sin(dLat/2) + cos(lat1 * M_PI / 180) * cos(lat2 * M_PI / 180) * sin(dLon/2) * sin(dLon/2)
+        c = 2 * atan2(sqrt(a), sqrt(1-a))
+        d = R * c
         return d * 1000; #meters
 
