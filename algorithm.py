@@ -1,4 +1,4 @@
-from math import sin,cos,atan2,sqrt
+from math import sin,cos,atan2,sqrt,pi
 
 class Algorithms():
     ##  Documentation for decimal_degrees_to_time_degrees
@@ -32,11 +32,10 @@ class Algorithms():
     #  Longtitude is the Y value from the world
     #  Latitude is the X value from the world
     def measure_distance(self, lat1, lon1, lat2, lon2):
-        M_PI = 3.14159265358979323846
         R = 6378.137  #Radius of earth in KM
-        dLat = lat2 * M_PI / 180 - lat1 * M_PI / 180
-        dLon = lon2 * M_PI / 180 - lon1 * M_PI / 180
-        a = sin(dLat/2) * sin(dLat/2) + cos(lat1 * M_PI / 180) * cos(lat2 * M_PI / 180) * sin(dLon/2) * sin(dLon/2)
+        dLat = lat2 * pi / 180 - lat1 * pi / 180
+        dLon = lon2 * pi / 180 - lon1 * pi / 180
+        a = sin(dLat/2) * sin(dLat/2) + cos(lat1 * pi / 180) * cos(lat2 * pi / 180) * sin(dLon/2) * sin(dLon/2)
         c = 2 * atan2(sqrt(a), sqrt(1-a))
         d = R * c
         return d * 1000; #meters
@@ -46,11 +45,10 @@ class Algorithms():
     #  The distance x and y is in meters
     #  The latitude and longtitude is the coordinate from the robot
     #  This way you can give an obstacle a world coordinate location
-    def calc_new_coordinate(self, latitude, longtitude, distance_y, distance_x):
-        M_PI = 3.14159265358979323846
+    def new_coordinate(self, latitude, longtitude, distance_y, distance_x):
         R = 6378.137  #Radius of earth in KM
-        new_latitude = latitude + (distance_y / R) * (100 / M_PI)
-        new_longtitude = longtitude + (distance_x / R) * (100 / M_PI)
+        new_latitude = latitude + (distance_y / R) * (100 / pi)
+        new_longtitude = longtitude + (distance_x / R) * (100 / pi)
 
     ## Documentation for from_lidar_to_coordinate
     #  The function makes from distance and degree, an x and y value.
