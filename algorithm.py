@@ -45,7 +45,7 @@ class Algorithms():
     #  The distance x and y is in meters
     #  The latitude and longtitude is the coordinate from the robot
     #  This way you can give an obstacle a world coordinate location
-    def new_coordinate(self, latitude, longtitude, distance_y, distance_x):
+    def calculate_new_coordinate(self, latitude, longtitude, distance_y, distance_x):
         R = 6378.137  #Radius of earth in KM
         new_latitude = latitude + (distance_y / R) * (100 / pi)
         new_longtitude = longtitude + (distance_x / R) * (100 / pi)
