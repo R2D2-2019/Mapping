@@ -1,4 +1,4 @@
-from math import sin,cos,atan2,sqrt,pi
+from math import sin,cos,atan2,sqrt,pi,degrees,radians
 
 class Algorithms():
     ##  Documentation for decimal_degrees_to_time_degrees
@@ -47,13 +47,16 @@ class Algorithms():
     #  This way you can give an obstacle a world coordinate location
     def calculate_new_coordinate(self, latitude, longtitude, distance_y, distance_x):
         R = 6378.137  #Radius of earth in KM
-        new_latitude = latitude + (distance_y / R) * (100 / pi)
-        new_longtitude = longtitude + (distance_x / R) * (100 / pi)
+        obstacle_latitude = latitude + (distance_y / R) * (100 / pi)
+        obstacle_longtitude = longtitude + (distance_x / R) * (100 / pi)
+        return(obstacle_latitude, obstacle_longtitude)
 
     ## Documentation for from_lidar_to_coordinate
     #  The function makes from distance and degree, an x and y value.
     #  This is needed to calculate the coordinate from the lidar given value.
     def from_lidar_to_coordinate(self, lidar_degree, distance):
-        degree = lidar_degree
-        distance_y = sin(degree) * distance
-        distance_x = cos(degree) * distance
+        lidar_degree += 90 #to make 0 degree and 360 the top of the map 
+        lidar_degree = radians(lidar_degree) 
+        distance_x = round(cos(lidar_degree)*distance)
+        distance_y = round(sin(lidar_degree)*distance)
+        return(distance_x, distance_y)
