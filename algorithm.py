@@ -59,4 +59,4 @@ class Algorithms():
         lidar_degree = radians(lidar_degree) 
         distance_x = round(cos(lidar_degree)*distance)
         distance_y = round(sin(lidar_degree)*distance)
-        return(distance_x, distance_y)
+        return[distance_x, distance_y]
