@@ -38,7 +38,7 @@ class Algorithms():
         a = sin(dLat/2) * sin(dLat/2) + cos(lat1 * pi / 180) * cos(lat2 * pi / 180) * sin(dLon/2) * sin(dLon/2)
         c = 2 * atan2(sqrt(a), sqrt(1-a))
         d = R * c
-        return d * 1000; #meters
+        return d * 1000 #meters
 
     ## Documentation for calc_new_coordinate
     #  The function calculates a new coordinate based on the distance that you give 
@@ -59,4 +59,4 @@ class Algorithms():
         lidar_degree = radians(lidar_degree) 
         distance_x = round(cos(lidar_degree)*distance)
         distance_y = round(sin(lidar_degree)*distance)
-        return(distance_x, distance_y)
+        return[distance_x, distance_y]
